@@ -2,13 +2,19 @@ package com.example.android.marsrealestate.network
 
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
+
+private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
 private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com/"
 
 private val retrofit = Retrofit.Builder()
-        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create())
         .baseUrl(BASE_URL)
         .build()
 
@@ -24,7 +30,7 @@ That Call object is used to start the request.
 interface MarsApiService {
     @GET("realestate")
     fun getProperties():
-            Call<String>
+            Call<List<MarsProperty>>
 }
 
 /*
